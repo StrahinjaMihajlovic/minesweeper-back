@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'neo4j'),
 
     /*
     |--------------------------------------------------------------------------
@@ -90,6 +90,14 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
         ],
+
+        'neo4j' => [
+            'driver' => 'neo4j',
+            'host'   => env('NEODB_HOST', 'localhost'),
+            'port'   => env('NEODB_PORT', '7474'),
+            'username' => env('NEODB_USERNAME', null),
+            'password' => env('NEODB_PASSWORD', null)
+        ]
 
     ],
 
