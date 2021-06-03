@@ -2,7 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\StoreController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,11 +20,11 @@ Route::group([
     'middleware' => 'api',
 
 ], function ($router) {
-
-    Route::post('login', [\App\Http\Controllers\AuthController::class, 'login']);
-    Route::post('test', [\App\Http\Controllers\AuthController::class, 'test']);
-    Route::post('logout', [\App\Http\Controllers\AuthController::class, 'logout']);
-
+    //routes for authentification
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('test', [AuthController::class, 'test'])->middleware('jwt');
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('register', [AuthController::class, 'register']);
 });
 
 

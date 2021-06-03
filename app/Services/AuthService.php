@@ -4,6 +4,8 @@
 namespace App\Services;
 
 
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthService
@@ -12,7 +14,7 @@ class AuthService
     {
         try {
 
-            if (! $user = JWTAuth::parseToken()->authenticate()) {
+            if (!JWTAuth::parseToken()->authenticate()) {
                 return response()->json(['user_not_found'], 404);
             }
 
@@ -29,6 +31,20 @@ class AuthService
         }
         return true;
     }
+
+    /**
+     * @param $data
+     * @return User|null
+     */
+    public function register($data)
+    {
+        return User::create([
+            'name' => $data['name'],
+            'password' => Hash::make($data['password']),
+            'email' => $data['email']
+        ]);
+    }
+
 
     /**
      * Get the token array structure.
