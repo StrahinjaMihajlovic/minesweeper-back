@@ -59,6 +59,6 @@ class StoreController extends Controller
 
     public function update(ItemUpdateRequest $request, Item $item)
     {
-        return response()->json($this->storeService->update($item, $request->input()));
+        return response()->json(['result' => $this->storeService->update($item, $request->input())]);
     }
 }

@@ -9,9 +9,7 @@ class Item extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'name';
-    protected $keyType = 'string';
-    public $incrementing = false;
+    protected $primaryKey = 'id';
 
     protected $label = 'Item';
     protected $fillable = [

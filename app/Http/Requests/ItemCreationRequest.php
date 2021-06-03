@@ -27,7 +27,6 @@ class ItemCreationRequest extends FormRequest
             'name' => [
                 'required',
                 'string',
-                'unique:Item'
             ],
             'price' => [
                 'required',

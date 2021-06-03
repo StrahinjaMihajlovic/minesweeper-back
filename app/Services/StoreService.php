@@ -23,26 +23,21 @@ class StoreService
         ]);
 
         return isset($item)
-            ? response()->json(['result' => 'successful', 'url' => \route('item.show', $data['name'])])
+            ? response()->json(['result' => 'successful', 'url' => \route('item.show', $item->id)])
             : response()->json(['result' => 'not successful']);
     }
 
     /** updates the result and returns the result
-     * @param $name
-     * @return bool
+     * @param Item $item
+     * @param mixed $data
+     * @return array|string
      */
     public function update(Item $item ,$data)
     {
         $item->price = $data['price'];
+        $item->name = $data['name'];
 
-        if($item->name !== $data['name']){
-            $newItem = $item->replicate(['name', 'updated_at']);
-            $newItem->name = $data['name'];
-            $item->delete();
-            $newItem->save();
-            return \route('item.update', $newItem->name);
-        }
-
-        return $item->update();
+        return $item->update() ? ['url' => \route('item.update', $item->id)]
+            : 'failed';
     }
 }
