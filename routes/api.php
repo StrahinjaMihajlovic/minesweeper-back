@@ -15,6 +15,21 @@ use App\Http\Controllers\StoreController;
 |
 */
 
+//routes for store and items
+Route::group([
+    'prefix' => 'store',
+    'middleware' => [
+        'api',
+        'jwt'
+    ]
+], function () {
+    Route::put('item', [StoreController::class, 'store']);
+
+    Route::get('item/{item}', [StoreController::class, 'show'])->name('item.show');
+    Route::delete('item/{item}', [StoreController::class, 'destroy']);
+    Route::patch('item/{item}', [StoreController::class, 'update'])->name('item.update');
+});
+
 Route::group([
 
     'middleware' => 'api',
@@ -26,6 +41,8 @@ Route::group([
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('register', [AuthController::class, 'register']);
 });
+
+
 
 
 
