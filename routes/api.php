@@ -37,7 +37,7 @@ Route::group([
 ], function ($router) {
     //routes for authentification
     Route::post('login', [AuthController::class, 'login']);
-    Route::post('test', [AuthController::class, 'test'])->middleware('jwt');
+    Route::get('test', [AuthController::class, 'test'])->middleware('jwt');
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('register', [AuthController::class, 'register']);
 });
