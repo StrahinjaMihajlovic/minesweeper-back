@@ -38,7 +38,7 @@ Route::group([
     //routes for authentification
     Route::post('login', [AuthController::class, 'login']);
     Route::get('test', [AuthController::class, 'test'])->middleware('jwt');
-    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('logout', [AuthController::class, 'logout'])->middleware('jwt');
     Route::post('register', [AuthController::class, 'register']);
 });
 

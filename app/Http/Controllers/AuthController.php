@@ -46,13 +46,13 @@ class AuthController extends Controller
     public function register(RegisterRequest $request)
     {
         $user = $this->service->register($request->input());
-        return response()->json(!isset($user) ? ['result' => 'could\'t create a new user '] :['result'  => ['user' => $user->attributesToArray()]]);
+        return response()->json(!isset($user) ? ['result' => 'could\'t create a new user '] :['result'  => 'success']);
     }
 
     public function logout()
     {
         auth()->logout(true);
-        return response()->json('logged out');
+        return response()->json(['result' => 'logged out']);
     }
 
 
