@@ -23,7 +23,12 @@ class ItemUpdateRequest extends FormRequest
      */
     public function rules()
     {
+
         return [
+            'description' => [
+                'nullable',
+                'string'
+            ],
             'price' => [
                 'required',
                 'Integer'

@@ -14,7 +14,8 @@ class Item extends Model
     protected $label = 'Item';
     protected $fillable = [
         'name',
-        'price'
+        'price',
+        'description'
     ];
 
     public function Category()

@@ -5,7 +5,6 @@ namespace App\Services;
 
 
 use App\Models\Item;
-use Illuminate\Routing\Route;
 
 class StoreService
 {
@@ -19,7 +18,8 @@ class StoreService
     {
         $item = Item::create([
             'name' => $data['name'],
-            'price' => $data['price']
+            'price' => $data['price'],
+            'description' => $data['description']
         ]);
 
         return isset($item)
@@ -34,9 +34,7 @@ class StoreService
      */
     public function update(Item $item ,$data)
     {
-        $item->price = $data['price'];
-        $item->name = $data['name'];
-
+        $item->fill($data);
         return $item->update() ? ['url' => \route('item.update', $item->id)]
             : 'failed';
     }

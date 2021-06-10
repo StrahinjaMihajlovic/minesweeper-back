@@ -24,6 +24,10 @@ class ItemCreationRequest extends FormRequest
     public function rules()
     {
         return [
+            'description' => [
+                'present',
+                'string'
+            ],
             'name' => [
                 'required',
                 'string',
