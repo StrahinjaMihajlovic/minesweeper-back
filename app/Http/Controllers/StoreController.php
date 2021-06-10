@@ -6,8 +6,6 @@ use App\Http\Requests\ItemCreationRequest;
 use App\Http\Requests\ItemUpdateRequest;
 use App\Models\Item;
 use App\Services\StoreService;
-use Illuminate\Contracts\Cache\Store;
-use Illuminate\Http\Request;
 
 class StoreController extends Controller
 {
@@ -19,9 +17,13 @@ class StoreController extends Controller
     }
 
     //returns data for index page
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index()
     {
-
+        return response()->json(['items' => Item::paginate(15)->all()]);
     }
 
     //displays single item
@@ -43,7 +45,7 @@ class StoreController extends Controller
      */
     public function store(ItemCreationRequest $request)
     {
-        return $this->storeService->store($request->only(['name', 'price']));
+        return $this->storeService->store($request->only(['name', 'price', 'description']));
     }
 
     // destroys an item and returs result of the action
@@ -59,6 +61,6 @@ class StoreController extends Controller
 
     public function update(ItemUpdateRequest $request, Item $item)
     {
-        return response()->json(['result' => $this->storeService->update($item, $request->input())]);
+        return response()->json(['result' => $this->storeService->update($item, $request->only(['name', 'price', 'description']))]);
     }
 }
