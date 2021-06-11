@@ -8,9 +8,14 @@ use App\Models\Item;
 
 class StoreService
 {
-    public function index()
+    /**
+     * @param string $sort
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function index($sort = name)
     {
-
+        $items = Item::paginate(15)->sortBy($sort)->all();
+        return response()->json(['items' => array_values($items)]);
     }
 
 

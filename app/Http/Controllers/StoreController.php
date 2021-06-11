@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ItemCreationRequest;
 use App\Http\Requests\ItemUpdateRequest;
+use App\Http\Requests\StoreIndexRequest;
 use App\Models\Item;
 use App\Services\StoreService;
 
@@ -19,11 +20,12 @@ class StoreController extends Controller
     //returns data for index page
 
     /**
+     * @param StoreIndexRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(StoreIndexRequest $request)
     {
-        return response()->json(['items' => Item::paginate(15)->all()]);
+        return $this->storeService->index($request->query('sort'));
     }
 
     //displays single item
