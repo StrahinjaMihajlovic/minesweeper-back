@@ -25,7 +25,7 @@ class StoreController extends Controller
      */
     public function index(StoreIndexRequest $request)
     {
-        return $this->storeService->index($request->query('sort'));
+        return $this->storeService->index($request->query('sort'), $request->query('order'));
     }
 
     //displays single item

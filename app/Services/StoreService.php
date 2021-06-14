@@ -13,9 +13,14 @@ class StoreService
      * @param string $sort
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index($sort = name)
+    public function index($sort = name, $order)
     {
-        $items = Item::paginate(15)->sortBy($sort)->all();
+        if($order === 'desc') {
+            $items = Item::paginate(15)->sortByDesc($sort)->all();
+        } else {
+            $items = Item::paginate(15)->sortBy($sort)->all();
+        }
+
         return response()->json(['items' => array_values($items)]);
     }
 
