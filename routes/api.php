@@ -23,11 +23,11 @@ Route::group([
 
     ]
 ], function () {
-    Route::put('item', [StoreController::class, 'store']);
+    Route::post('item', [StoreController::class, 'store']);
     Route::get('/', [StoreController::class, 'index']);
     Route::get('item/{item}', [StoreController::class, 'show'])->name('item.show');
     Route::delete('item/{item}', [StoreController::class, 'destroy']);
-    Route::patch('item/{item}', [StoreController::class, 'update'])->name('item.update');
+    Route::put('item/{item}', [StoreController::class, 'update'])->name('item.update');
 });
 
 Route::group([

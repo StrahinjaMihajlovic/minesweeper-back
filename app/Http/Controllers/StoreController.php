@@ -47,7 +47,8 @@ class StoreController extends Controller
      */
     public function store(ItemCreationRequest $request)
     {
-        return $this->storeService->store($request->only(['name', 'price', 'description']));
+        $image = $request->hasFile('image') ? $request->file('image') : false;
+        return $this->storeService->store($request->only(['name', 'price', 'description']), $image);
     }
 
     // destroys an item and returs result of the action

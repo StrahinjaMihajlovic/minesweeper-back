@@ -5,6 +5,7 @@ namespace App\Services;
 
 
 use App\Models\Item;
+use Illuminate\Support\Facades\Storage;
 
 class StoreService
 {
@@ -19,12 +20,19 @@ class StoreService
     }
 
 
-    public function store($data)
+    public function store($data, $image)
     {
+        $imageUrl = Storage::disk('public')->url('default-images/default.png');
+        if($image) {
+            $imagePath = $image->store('store-images', 'public');
+            $imageUrl = Storage::disk('public')->url($imagePath);
+        }
+
         $item = Item::create([
             'name' => $data['name'],
             'price' => $data['price'],
-            'description' => $data['description']
+            'description' => $data['description'],
+            'image' => $imageUrl,
         ]);
 
         return isset($item)
