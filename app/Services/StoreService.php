@@ -19,9 +19,9 @@ class StoreService
     public function index($sort = 'name', $order)
     {
         if($order === 'desc') {
-            $items = Item::paginate($this->itemsPerPage)->sortByDesc($sort)->all();
+            $items = Item::with('category')->paginate($this->itemsPerPage)->with('Category')->sortByDesc($sort)->all();
         } else {
-            $items = Item::paginate($this->itemsPerPage)->sortBy($sort)->all();
+            $items = Item::with('category')->paginate($this->itemsPerPage)->sortBy($sort)->all();
         }
         // returns items per page and how much pages there is for given parameters
         return response()->json(['items' => array_values($items), 'pages' => $this->pages()]);
