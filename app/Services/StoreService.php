@@ -4,6 +4,7 @@
 namespace App\Services;
 
 
+use App\Models\Category;
 use App\Models\Item;
 use Illuminate\Support\Facades\Storage;
 
@@ -15,7 +16,7 @@ class StoreService
      * @param string $sort
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index($sort = name, $order)
+    public function index($sort = 'name', $order)
     {
         if($order === 'desc') {
             $items = Item::paginate($this->itemsPerPage)->sortByDesc($sort)->all();
@@ -46,9 +47,14 @@ class StoreService
             'image' => $imageUrl,
         ]);
 
-        return isset($item)
-            ? response()->json(['result' => 'successful', 'url' => \route('item.show', $item->id)])
-            : response()->json(['result' => 'not successful']);
+        if(isset($data['category'])) {
+            $category = Category::where('name', $data['category'])->first();
+            $category->items()->save($item);
+        }
+
+
+
+        return $this->makeResponse($item, 'item.show');
     }
 
     /** updates the result and returns the result
@@ -61,5 +67,19 @@ class StoreService
         $item->fill($data);
         return $item->update() ? ['url' => \route('item.update', $item->id)]
             : 'failed';
+    }
+
+    public function createCategory($name) {
+        $category = Category::create([
+            'name' => $name
+        ]);
+
+        return $this->makeResponse($category, 'category.create');
+    }
+
+    protected function makeResponse($model, $route) {
+        return isset($model)
+            ? response()->json(['result' => 'successful', 'url' => \route($route, $model->id)])
+            : response()->json(['result' => 'not successful']);
     }
 }
