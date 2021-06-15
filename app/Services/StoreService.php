@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Storage;
 
 class StoreService
 {
+    // declare the number of items you want to get per page (pagination)
+    public $itemsPerPage = 6;
     /**
      * @param string $sort
      * @return \Illuminate\Http\JsonResponse
@@ -16,14 +18,18 @@ class StoreService
     public function index($sort = name, $order)
     {
         if($order === 'desc') {
-            $items = Item::paginate(15)->sortByDesc($sort)->all();
+            $items = Item::paginate($this->itemsPerPage)->sortByDesc($sort)->all();
         } else {
-            $items = Item::paginate(15)->sortBy($sort)->all();
+            $items = Item::paginate($this->itemsPerPage)->sortBy($sort)->all();
         }
-
-        return response()->json(['items' => array_values($items)]);
+        // returns items per page and how much pages there is for given parameters
+        return response()->json(['items' => array_values($items), 'pages' => $this->pages()]);
     }
 
+    public function pages()
+    {
+        return ceil(Item::all()->count() / $this->itemsPerPage);
+    }
 
     public function store($data, $image)
     {
