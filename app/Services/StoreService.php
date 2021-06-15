@@ -12,19 +12,25 @@ class StoreService
 {
     // declare the number of items you want to get per page (pagination)
     public $itemsPerPage = 6;
+
     /**
-     * @param string $sort
+     * @param $sort
+     * @param $order
+     * @param $category
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index($sort = 'name', $order)
+    public function index($sort, $order, $category)
     {
         if($order === 'desc') {
-            $items = Item::with('category')->paginate($this->itemsPerPage)->with('Category')->sortByDesc($sort)->all();
+            $items = Item::with('category')->paginate($this->itemsPerPage)->sortByDesc($sort);
         } else {
-            $items = Item::with('category')->paginate($this->itemsPerPage)->sortBy($sort)->all();
+            $items = Item::with('category')->paginate($this->itemsPerPage)->sortBy($sort);
         }
+
+        $itemsFiltered = $category ? $items->where('category.name', $category)->all() : $items->all();
+
         // returns items per page and how much pages there is for given parameters
-        return response()->json(['items' => array_values($items), 'pages' => $this->pages()]);
+        return response()->json(['items' => array_values($itemsFiltered), 'pages' => $this->pages()]);
     }
 
     public function pages()
