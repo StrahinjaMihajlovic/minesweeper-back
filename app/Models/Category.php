@@ -18,6 +18,6 @@ class Category extends Model
 
     public function items()
     {
-        return $this->hasMany('Item', 'BELONGS_TO');
+        return $this->hasMany(Item::class, 'BELONGS_TO');
     }
 }

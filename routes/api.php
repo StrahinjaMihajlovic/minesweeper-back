@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\StoreController;
@@ -28,13 +27,15 @@ Route::group([
     Route::get('item/{item}', [StoreController::class, 'show'])->name('item.show');
     Route::delete('item/{item}', [StoreController::class, 'destroy']);
     Route::put('item/{item}', [StoreController::class, 'update'])->name('item.update');
+    Route::post('category', [StoreController::class, 'createCategory'])->name('category.create');
+    Route::get('category', [StoreController::class, 'listCategories'])->name('category.list');
 });
 
 Route::group([
 
     'middleware' => 'api',
 
-], function ($router) {
+], function () {
     //routes for authentification
     Route::post('login', [AuthController::class, 'login']);
     Route::get('test', [AuthController::class, 'test'])->middleware('jwt');

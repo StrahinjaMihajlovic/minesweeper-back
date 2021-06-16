@@ -4,6 +4,7 @@
 namespace App\Services;
 
 
+use App\Models\Category;
 use App\Models\Item;
 use Illuminate\Support\Facades\Storage;
 
@@ -11,19 +12,25 @@ class StoreService
 {
     // declare the number of items you want to get per page (pagination)
     public $itemsPerPage = 6;
+
     /**
-     * @param string $sort
+     * @param $sort
+     * @param $order
+     * @param $category
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index($sort = name, $order)
+    public function index($sort, $order, $category)
     {
         if($order === 'desc') {
-            $items = Item::paginate($this->itemsPerPage)->sortByDesc($sort)->all();
+            $items = Item::with('category')->paginate($this->itemsPerPage)->sortByDesc($sort);
         } else {
-            $items = Item::paginate($this->itemsPerPage)->sortBy($sort)->all();
+            $items = Item::with('category')->paginate($this->itemsPerPage)->sortBy($sort);
         }
+
+        $itemsFiltered = $category ? $items->where('category.name', $category)->all() : $items->all();
+
         // returns items per page and how much pages there is for given parameters
-        return response()->json(['items' => array_values($items), 'pages' => $this->pages()]);
+        return response()->json(['items' => array_values($itemsFiltered), 'pages' => $this->pages()]);
     }
 
     public function pages()
@@ -46,9 +53,14 @@ class StoreService
             'image' => $imageUrl,
         ]);
 
-        return isset($item)
-            ? response()->json(['result' => 'successful', 'url' => \route('item.show', $item->id)])
-            : response()->json(['result' => 'not successful']);
+        if(isset($data['category'])) {
+            $category = Category::where('name', $data['category'])->first();
+            $category->items()->save($item);
+        }
+
+
+
+        return $this->makeResponse($item, 'item.show');
     }
 
     /** updates the result and returns the result
@@ -61,5 +73,19 @@ class StoreService
         $item->fill($data);
         return $item->update() ? ['url' => \route('item.update', $item->id)]
             : 'failed';
+    }
+
+    public function createCategory($name) {
+        $category = Category::create([
+            'name' => $name
+        ]);
+
+        return $this->makeResponse($category, 'category.create');
+    }
+
+    protected function makeResponse($model, $route) {
+        return isset($model)
+            ? response()->json(['result' => 'successful', 'url' => \route($route, $model->id)])
+            : response()->json(['result' => 'not successful']);
     }
 }

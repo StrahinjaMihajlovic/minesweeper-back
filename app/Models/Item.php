@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Facades\Storage;
 use Vinelab\NeoEloquent\Eloquent\Model;
 
 class Item extends Model
@@ -20,8 +19,8 @@ class Item extends Model
         'image'
     ];
 
-    public function Category()
+    public function category()
     {
-        return $this->belongsTo('Category', 'BELONGS_TO');
+        return $this->belongsTo(Category::class, 'BELONGS_TO');
     }
 }

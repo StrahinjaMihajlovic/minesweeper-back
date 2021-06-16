@@ -36,6 +36,9 @@ class ItemCreationRequest extends FormRequest
                 'required',
                 'Integer'
             ],
+            'category' => [
+                'exists:Category, name'
+            ]
         ];
     }
 }
