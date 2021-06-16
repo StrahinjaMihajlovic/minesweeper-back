@@ -18,6 +18,11 @@ class Item extends Model
         'description',
         'image'
     ];
+    // saves price as an integer in database
+    public function setPriceAttribute($value)
+    {
+        $this->attributes['price'] = intval($value);
+    }
 
     public function category()
     {

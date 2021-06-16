@@ -21,12 +21,14 @@ class StoreService
      */
     public function index($sort, $order, $category)
     {
+        $items = Item::with('category');
         if($order === 'desc') {
-            $items = Item::with('category')->paginate($this->itemsPerPage)->sortByDesc($sort);
+            $items = $items->orderBy($sort, 'desc');
         } else {
-            $items = Item::with('category')->paginate($this->itemsPerPage)->sortBy($sort);
+            $items = $items->orderBy($sort);
         }
 
+        $items = $items->paginate($this->itemsPerPage);
         $itemsFiltered = $category ? $items->where('category.name', $category)->all() : $items->all();
 
         // returns items per page and how much pages there is for given parameters
