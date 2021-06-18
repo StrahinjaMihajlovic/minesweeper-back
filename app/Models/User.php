@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Authenticable\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -43,6 +42,15 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * @return \Vinelab\NeoEloquent\Eloquent\Relations\HasMany
+     */
+    public function boughtItems()
+    {
+        return $this->hasMany(Item::class, 'BOUGHT');
+    }
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *

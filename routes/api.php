@@ -29,6 +29,7 @@ Route::group([
     Route::put('item/{item}', [StoreController::class, 'update'])->name('item.update');
     Route::post('category', [StoreController::class, 'createCategory'])->name('category.create');
     Route::get('category', [StoreController::class, 'listCategories'])->name('category.list');
+    Route::post('item/{item}', [StoreController::class, 'sellItem'])->name('item.sell');
 });
 
 Route::group([

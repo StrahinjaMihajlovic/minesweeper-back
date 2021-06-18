@@ -89,6 +89,11 @@ class StoreController extends Controller
         return $this->storeService->createCategory($request->input('name'));
     }
 
+    public function sellItem(Item $item)
+    {
+        return $this->storeService->transaction($item);
+    }
+
     /** Returns all categories
      * @return \Illuminate\Http\JsonResponse
      */

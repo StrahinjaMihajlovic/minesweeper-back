@@ -94,4 +94,10 @@ class StoreService
             ? response()->json(['result' => 'successful', 'url' => \route($route, $model->id)])
             : response()->json(['result' => 'not successful']);
     }
+
+    public function transaction(Item $item)
+    {
+        $result = auth()->user()->boughtItems()->save($item);
+        return response()->json(['result' => $result]);
+    }
 }
