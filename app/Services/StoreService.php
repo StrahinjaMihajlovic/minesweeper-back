@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Models\Category;
 use App\Models\Item;
+use App\Transformers\ItemTransformer;
 use Illuminate\Support\Facades\Storage;
 
 class StoreService
@@ -17,22 +18,25 @@ class StoreService
      * @param $sort
      * @param $order
      * @param $category
-     * @return \Illuminate\Http\JsonResponse
+     *
      */
     public function index($sort, $order, $category)
     {
-        $items = Item::with('category');
+        $items = Item::with(['category']);
+
+        $items = $category ? $items->whereHas('category', function($query) use ($category) {
+            $query->where('name', $category);
+        }): $items;
+
         if($order === 'desc') {
-            $items = $items->orderBy($sort, 'desc');
+            $itemsFiltered = $items->orderBy($sort, 'desc');
         } else {
-            $items = $items->orderBy($sort);
+            $itemsFiltered = $items->orderBy($sort);
         }
 
-        $items = $items->paginate($this->itemsPerPage);
-        $itemsFiltered = $category ? $items->where('category.name', $category)->all() : $items->all();
-
+        $paginator = $itemsFiltered->paginate($this->itemsPerPage);
         // returns items per page and how much pages there is for given parameters
-        return response()->json(['items' => array_values($itemsFiltered), 'pages' => $this->pages()]);
+        return response()->json(fractal($paginator, new ItemTransformer())->toArray());
     }
 
     public function pages()

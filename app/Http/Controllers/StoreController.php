@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ItemCreationRequest;
 use App\Http\Requests\ItemUpdateRequest;
 use App\Http\Requests\StoreIndexRequest;
+use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use App\Models\Item;
 use App\Services\StoreService;
@@ -92,6 +93,6 @@ class StoreController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function listCategories() {
-        return response()->json(['categories' => Category::all()]);
+        return response()->json(CategoryResource::collection(Category::all()));
     }
 }
