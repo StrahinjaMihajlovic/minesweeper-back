@@ -22,17 +22,18 @@ class StoreService
     public function index($sort, $order, $category)
     {
         $items = Item::with('category');
+
+        $itemsFiltered = $category ? $items->where('Category.name', $category) : $items;
+
         if($order === 'desc') {
-            $items = $items->orderBy($sort, 'desc');
+            $itemsFiltered = $items->orderBy($sort, 'desc');
         } else {
-            $items = $items->orderBy($sort);
+            $itemsFiltered = $items->orderBy($sort);
         }
 
-        $items = $items->paginate($this->itemsPerPage);
-        $itemsFiltered = $category ? $items->where('category.name', $category)->all() : $items->all();
-
+        $paginator = $itemsFiltered->paginate($this->itemsPerPage);
         // returns items per page and how much pages there is for given parameters
-        return response()->json(['items' => array_values($itemsFiltered), 'pages' => $this->pages()]);
+        return response()->json(fractal($paginator, new ItemTransformer())->toArray());
     }
 
     public function pages()
