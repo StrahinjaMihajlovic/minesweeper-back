@@ -18,13 +18,15 @@ class StoreService
      * @param $sort
      * @param $order
      * @param $category
-     * @return \Illuminate\Http\JsonResponse
+     *
      */
     public function index($sort, $order, $category)
     {
-        $items = Item::with('category');
+        $items = Item::with(['category']);
 
-        $itemsFiltered = $category ? $items->where('Category.name', $category) : $items;
+        $items = $category ? $items->whereHas('category', function($query) use ($category) {
+            $query->where('name', $category);
+        }): $items;
 
         if($order === 'desc') {
             $itemsFiltered = $items->orderBy($sort, 'desc');
