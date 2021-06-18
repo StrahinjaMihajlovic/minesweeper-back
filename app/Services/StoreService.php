@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Models\Category;
 use App\Models\Item;
+use App\Transformers\ItemTransformer;
 use Illuminate\Support\Facades\Storage;
 
 class StoreService
