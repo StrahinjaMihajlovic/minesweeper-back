@@ -19,7 +19,7 @@ Route::group([
     'prefix' => 'store',
     'middleware' => [
         'api',
-
+        'jwt'
     ]
 ], function () {
     Route::post('item', [StoreController::class, 'store']);
