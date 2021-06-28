@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\StoreController;
+use App\Http\Controllers\GameController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -43,7 +44,13 @@ Route::group([
     Route::post('register', [AuthController::class, 'register']);
 });
 
-
-
+Route::group([
+    'prefix' => 'game',
+    'middleware' => [
+        'api',
+    ]
+], function () {
+    Route::post('generate', [GameController::class, 'generateGame'])->name('game.generator');
+});
 
 
