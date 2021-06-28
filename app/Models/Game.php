@@ -11,10 +11,11 @@ class Game extends Model
 
     protected $primaryKey = 'id';
     protected $label = 'Game';
-    //TODO add game properties later, when the game is developed sufficiently
-    /*protected $fillable = [
 
-    ];*/
+    protected $fillable = [
+        'size_x',
+        'size_y'
+    ];
 
     /** returns the relationship with the users that have played this game
      *
