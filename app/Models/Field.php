@@ -38,36 +38,4 @@ class Field extends Model
     {
         return $this->hasMany(Field::class, 'NEIGHBORS');
     }
-
-    //sets this field with a bomb if the generator returns true and notifies siblings
-    public function hasBomb($generator)
-    {
-        if($generator) {
-            $this->contains = 'bomb';
-            $this->save();
-            $this->notifyNeighbors();
-        }
-    }
-
-
-    // notifies all the neigbors of this field that this field has a bomb
-    protected function notifyNeighbors()
-    {
-        $siblings = $this->neighbors()->get();
-        $siblings->each(function($sibling) {
-            /* @var $sibling Field */
-            $sibling->neighborHasBomb();
-        });
-    }
-
-    /* TODO make the exception handling mechanism when the bomb update fails*/
-    // increment the contains attribute if the neighbor alerts the bomb presence
-    protected function neighborHasBomb()
-    {
-        if(is_int($this->contains)){
-            $this->contains++;
-            $this->save();
-        }
-    }
-
 }

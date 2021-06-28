@@ -12,10 +12,11 @@ class BombLogic
      * @var $field Field
      */
     public $field;
-
+    protected $neighbors;
     public function __construct(Field $field)
     {
         $this->field = $field;
+        $this->neighbors = $this->field->neighbors()->get();
     }
 
     //sets this field with a bomb if the generator returns true and notifies siblings
@@ -32,8 +33,7 @@ class BombLogic
     // notifies all the neighbors of this field that this field has a bomb
     protected function notifyNeighbors()
     {
-        $neighbors = $this->field->neighbors()->get();
-        $neighbors->each(function($neighbor) {
+        $this->neighbors->each(function($neighbor) {
             $alertNeighbor = new BombLogic($neighbor);
             $alertNeighbor->neighborHasBomb();
         });
