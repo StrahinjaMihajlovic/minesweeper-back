@@ -12,17 +12,21 @@ class BombLogic
      * @var $field Field
      */
     public $fields;
-
+    protected $generator;
     public function setFields($fields)
     {
         $this->fields = $fields;
     }
 
-    //sets this field with a bomb if the generator returns true and notifies neighbors
-    public function setBombs($generator)
+    public function setGenerator($generator)
     {
-        $this->fields->each(function($field) use ($generator) {
-            if($generator) {
+        $this->generator = $generator;
+    }
+    //sets this field with a bomb if the generator returns true and notifies neighbors
+    public function setBombs()
+    {
+        $this->fields->each(function($field) {
+            if($this->generator->generate()) {
                 $field->contains = 'bomb';
                 $field->save();
                 $this->notifyNeighbors($field);

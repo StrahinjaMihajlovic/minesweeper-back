@@ -4,6 +4,7 @@
 namespace App\Services\Game_services;
 
 
+use App\Game\Generators\BoolGenerator;
 use App\Models\Field;
 use App\Models\Game;
 use Ramsey\Collection\Collection;
@@ -11,11 +12,11 @@ use Ramsey\Collection\Collection;
 class GameService
 {
     protected $game;
-    protected $BombLogic;
+    protected $bombLogic;
 
     public function __construct(BombLogic $bombLogic)
     {
-        $this->BombLogic = $bombLogic;
+        $this->bombLogic = $bombLogic;
     }
     /**Generates random fields with given table size
      * @param int $sizeX
@@ -42,8 +43,9 @@ class GameService
             }
 
         }
-        $this->BombLogic->setFields($rows->collapse());
-        $this->BombLogic->setBombs(true);
+        $this->bombLogic->setGenerator(new BoolGenerator());
+        $this->bombLogic->setFields($rows->collapse());
+        $this->bombLogic->setBombs();
         return $rows;
     }
 
