@@ -11,7 +11,12 @@ use Ramsey\Collection\Collection;
 class GameService
 {
     protected $game;
+    protected $BombLogic;
 
+    public function __construct(BombLogic $bombLogic)
+    {
+        $this->BombLogic = $bombLogic;
+    }
     /**Generates random fields with given table size
      * @param int $sizeX
      * @param int $sizeY
@@ -37,6 +42,8 @@ class GameService
             }
 
         }
+        $this->BombLogic->setFields($rows);
+        $this->BombLogic->setBombs(true);
         return $rows;
     }
 

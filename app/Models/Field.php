@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Vinelab\NeoEloquent\Eloquent\Model;
+use Vinelab\NeoEloquent\Eloquent\Relations\HasMany;
 
 class Field extends Model
 {
@@ -32,11 +33,19 @@ class Field extends Model
     }
 
     /** returns all sibling fields of this field
-     *
-     * @return \Vinelab\NeoEloquent\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function neighbors()
     {
         return $this->hasMany(Field::class, 'NEIGHBORS');
+    }
+
+    /** Workaround when we need unidirectional relationship in neo4j
+     * @return \Illuminate\Support\Collection
+     */
+    public function neighborsUniDirectional()
+    {
+        return $this->hasMany(Field::class, 'NEIGHBORS')->get()
+            ->merge($this->belongsToMany(Field::class, 'NEIGHBORS')->get());
     }
 }
