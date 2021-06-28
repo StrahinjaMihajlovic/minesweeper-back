@@ -42,7 +42,7 @@ class GameService
             }
 
         }
-        $this->BombLogic->setFields($rows);
+        $this->BombLogic->setFields($rows->collapse());
         $this->BombLogic->setBombs(true);
         return $rows;
     }

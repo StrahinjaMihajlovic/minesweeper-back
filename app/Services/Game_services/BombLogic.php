@@ -21,7 +21,7 @@ class BombLogic
     //sets this field with a bomb if the generator returns true and notifies neighbors
     public function setBombs($generator)
     {
-        $this->fields->eachSpread(function($field) use ($generator) {
+        $this->fields->each(function($field) use ($generator) {
             if($generator) {
                 $field->contains = 'bomb';
                 $field->save();
