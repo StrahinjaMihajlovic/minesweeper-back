@@ -11,41 +11,42 @@ class BombLogic
     /**
      * @var $field Field
      */
-    public $field;
-    protected $neighbors;
-    public function __construct(Field $field)
+    public $fields;
+
+    public function setFields($fields)
     {
-        $this->field = $field;
-        $this->neighbors = $this->field->neighbors()->get();
+        $this->fields = $fields;
     }
 
-    //sets this field with a bomb if the generator returns true and notifies siblings
-    public function hasBomb($generator)
+    //sets this field with a bomb if the generator returns true and notifies neighbors
+    public function setBombs($generator)
     {
-        if($generator) {
-            $this->field->contains = 'bomb';
-            $this->field->save();
-            $this->notifyNeighbors();
-        }
+        $this->fields->eachSpread(function($field) use ($generator) {
+            if($generator) {
+                $field->contains = 'bomb';
+                $field->save();
+                $this->notifyNeighbors($field);
+            }
+        });
+
     }
 
 
     // notifies all the neighbors of this field that this field has a bomb
-    protected function notifyNeighbors()
+    protected function notifyNeighbors($field)
     {
-        $this->neighbors->each(function($neighbor) {
-            $alertNeighbor = new BombLogic($neighbor);
-            $alertNeighbor->neighborHasBomb();
+        $field->neighborsUniDirectional()->each(function($neighbor) {
+            $this->neighborHasBomb($neighbor);
         });
     }
 
     /* TODO make the exception handling mechanism when the bomb update fails*/
     // increment the contains attribute if the neighbor alerts the bomb presence
-    protected function neighborHasBomb()
+    protected function neighborHasBomb($field)
     {
-        if(is_int($this->field->contains)){
-            $this->field->contains++;
-            $this->field->save();
+        if(is_int($field->contains)){
+            $field->contains++;
+            $field->save();
         }
     }
 
