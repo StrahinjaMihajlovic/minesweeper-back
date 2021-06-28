@@ -12,14 +12,15 @@ class Field extends Model
     protected $primaryKey = 'id';
     protected $label = 'Field';
     protected $fillable = [
-        'fieldNumber',
+        'field_number',
         'is_open'
     ];
     protected $guarded = [
         'contains'
     ];
     protected $attributes = [
-        'contains' => 0
+        'contains' => 0,
+        'is_open' => false
     ];
 
     /** return the game that this field is connected to
@@ -27,7 +28,7 @@ class Field extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|\Vinelab\NeoEloquent\Eloquent\Relations\BelongsTo
      */
     public function game() {
-        return $this->belongsTo(Game::class,'PLAYER');
+        return $this->belongsTo(Game::class,'BELONGS_TO');
     }
 
     /** returns all sibling fields of this field
