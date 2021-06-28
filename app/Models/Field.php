@@ -19,6 +19,11 @@ class Field extends Model
     protected $guarded = [
         'contains'
     ];
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'id'
+    ];
     protected $attributes = [
         'contains' => 0,
         'is_open' => false
