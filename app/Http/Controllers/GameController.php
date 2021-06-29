@@ -17,7 +17,7 @@ class GameController extends Controller
 
     public function play(Game $game)
     {
-        return response()->json(['fields' => $game->fields]);
+        return response()->json(['fields' => array_values($game->fields->sortBy('field_number')->all()), 'size' => "$game->size_x" . "x" . "$game->size_y"]);
     }
 
     public function generateGame()
