@@ -17,15 +17,27 @@ class Game extends Model
         'size_y'
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+
+    ];
     /** returns the relationship with the users that have played this game
      *
      * @return \Vinelab\NeoEloquent\Eloquent\Relations\HasMany
      */
-    public function players() {
+    public function players()
+    {
         return $this->hasMany(User::class,'PLAYER');
     }
 
-    public function fields() {
+    public function fields()
+    {
         return $this->hasMany(Field::class, 'BELONGS_TO');
+    }
+
+    public function owner()
+    {
+        return $this->hasOne(User::class, 'OWNER');
     }
 }

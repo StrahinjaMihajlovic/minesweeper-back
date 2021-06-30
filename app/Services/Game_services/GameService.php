@@ -18,6 +18,16 @@ class GameService
     {
         $this->bombLogic = $bombLogic;
     }
+
+    /** Marks field as open
+     * @param Field $field
+     */
+    public function openField(Field $field)
+    {
+        $field->is_open = true;
+        $field->save();
+    }
+
     /**Generates random fields with given table size
      * @param int $sizeX
      * @param int $sizeY
