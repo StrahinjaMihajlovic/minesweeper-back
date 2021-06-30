@@ -53,6 +53,7 @@ Route::group([
     Route::post('generate', [GameController::class, 'generateGame'])->name('game.generator');
     Route::get('/{game}', [GameController::class, 'play'])->name('play');
     Route::post('/open/{field}', [GameController::class, 'openField']);
+    Route::get('/', [GameController::class, 'listGames']);
 });
 
 

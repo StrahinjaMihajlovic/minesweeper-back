@@ -41,4 +41,10 @@ class GameController extends Controller
     {
         $this->gameService->openField($field);
     }
+
+    public function listGames()
+    {
+        //TODO filter the games by not owned and sorting by finished/unfinished
+        return Game::all();
+    }
 }
