@@ -19,13 +19,30 @@ class GameService
         $this->bombLogic = $bombLogic;
     }
 
+    public function setGame(Game $game)
+    {
+        $this->game = $game;
+    }
+
+    /**Marks that the player played this game if not already
+     *
+     */
+    public function markThePlayer()
+    {
+        if(!auth()->user()->hasPlayedTheGame($this->game)){
+            auth()->user()->gamesPlayed()->save($this->game);
+        }
+    }
+
     /** Marks field as open
      * @param Field $field
      */
     public function openField(Field $field)
     {
-        $field->is_open = true;
-        $field->save();
+        if(!auth()->user()->didPlayerOpenTheField($field)){
+            return auth()->user()->fieldsOpened()->save($field);
+        }
+        return false;
     }
 
     /**Generates random fields with given table size

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Resources\FieldResource;
+use App\Http\Resources\GameResource;
 use App\Models\Field;
 use App\Models\Game;
 use App\Services\Game_services\GameService;
@@ -23,6 +24,8 @@ class GameController extends Controller
      */
     public function play(Game $game)
     {
+        $this->gameService->setGame($game);
+        $this->gameService->markThePlayer();
         return response()->json([
             'fields' => array_values(FieldResource::collection($game->fields->sortBy('field_number'))->collection->all())
             ,'size' => "$game->size_x" . "x" . "$game->size_y"]);
@@ -39,12 +42,12 @@ class GameController extends Controller
      */
     public function openField(Field $field)
     {
-        $this->gameService->openField($field);
+        return response()->json($this->gameService->openField($field) ? 'success' : 'failure');
     }
 
     public function listGames()
     {
         //TODO filter the games by not owned and sorting by finished/unfinished
-        return Game::all();
+        return GameResource::collection(Game::all());
     }
 }

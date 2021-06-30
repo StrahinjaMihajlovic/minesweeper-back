@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Field;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class FieldResource extends JsonResource
@@ -17,7 +18,15 @@ class FieldResource extends JsonResource
         return [
             'field_number' => $this->field_number,
             'id' => $this->id,
-            'contains' => $this->is_open ? $this->contains : 'not visited'
+            'contains' => $this->isOpened() ? $this->contains : 'not visited'
         ];
+    }
+
+    /** tests if the fields is opened or not
+     * @return mixed
+     */
+    protected function isOpened()
+    {
+        return auth()->user()->didPlayerOpenTheField(Field::find($this->id));
     }
 }
