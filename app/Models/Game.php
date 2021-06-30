@@ -31,6 +31,11 @@ class Game extends Model
         return $this->hasMany(User::class,'PLAYER');
     }
 
+    public function hasUserPlayedThisGame()
+    {
+        return auth()->user()->hasPlayedTheGame($this);
+    }
+
     public function fields()
     {
         return $this->hasMany(Field::class, 'BELONGS_TO');

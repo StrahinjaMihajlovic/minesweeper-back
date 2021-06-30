@@ -14,7 +14,6 @@ class Field extends Model
     protected $label = 'Field';
     protected $fillable = [
         'field_number',
-        'is_open'
     ];
     protected $guarded = [
         'contains'
@@ -26,14 +25,14 @@ class Field extends Model
     ];
     protected $attributes = [
         'contains' => 0,
-        'is_open' => false
     ];
 
     /** return the game that this field is connected to
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|\Vinelab\NeoEloquent\Eloquent\Relations\BelongsTo
      */
-    public function game() {
+    public function game()
+    {
         return $this->belongsTo(Game::class,'BELONGS_TO');
     }
 
@@ -53,4 +52,11 @@ class Field extends Model
         return $this->hasMany(Field::class, 'NEIGHBORS')->get()
             ->merge($this->belongsToMany(Field::class, 'NEIGHBORS')->get());
     }
+
+    public function usersOpened()
+    {
+        return $this->belongsToMany(User::class, 'PLAYER_OPENED');
+    }
+
+
 }

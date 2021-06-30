@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Authenticable\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -60,5 +59,25 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
        return [];
+    }
+
+    public function fieldsOpened()
+    {
+        return $this->hasMany(Field::class, 'PLAYER_OPENED');
+    }
+
+    public function gamesPlayed()
+    {
+        return $this->hasMany(Game::class, 'PLAYED');
+    }
+
+    public function hasPlayedTheGame(Game $game)
+    {
+        return $this->hasMany(Game::class, 'PLAYED')->where('id', $game->id)->count() > 0;
+    }
+
+    public function didPlayerOpenTheField(Field $field)
+    {
+        return $this->fieldsOpened()->where('id', $field->id)->count() > 0;
     }
 }
