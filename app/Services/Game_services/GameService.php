@@ -50,7 +50,7 @@ class GameService
      * @param int $sizeY
      *
      */
-    public function generateGame($sizeX, $sizeY)
+    public function generateGame($sizeX, $sizeY, $bombs = [])
     {
         $this->game = Game::create([
             'size_x' => $sizeX,
@@ -72,7 +72,7 @@ class GameService
         }
         $this->bombLogic->setGenerator(new BoolGenerator());
         $this->bombLogic->setFields($rows->collapse());
-        $this->bombLogic->setBombs();
+        $this->bombLogic->setBombs($bombs);
         return $rows;
     }
 

@@ -8,6 +8,7 @@ use App\Http\Resources\GameResource;
 use App\Models\Field;
 use App\Models\Game;
 use App\Services\Game_services\GameService;
+use Illuminate\Http\Request;
 
 class GameController extends Controller
 {
@@ -49,5 +50,11 @@ class GameController extends Controller
     {
         //TODO filter the games by not owned and sorting by finished/unfinished
         return GameResource::collection(Game::all());
+    }
+
+    public function createGame(Request $request)
+    {
+        return response()->json($this->gameService->generateGame($request->input('x'), $request->input('y')
+            , json_decode($request->input('bombs'))));
     }
 }
