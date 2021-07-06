@@ -104,7 +104,7 @@ class GameService
     {
         $fields = collect();
         for($i = 0; $i < $sizeX; $i++) {
-            $field = Field::create(['field_number' => $y . ($i + 1)]);
+            $field = Field::create(['field_number_display' => $y . ($i + 1), 'field_number' => ($y * 10) + $i + 1]);
             $fields->push($field);
             $this->game->fields()->save($field);
             if($i !== 0) {

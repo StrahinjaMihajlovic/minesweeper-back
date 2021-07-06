@@ -13,10 +13,11 @@ class Field extends Model
     protected $primaryKey = 'id';
     protected $label = 'Field';
     protected $fillable = [
-        'field_number',
+        'field_number_display',
+        'field_number'
     ];
     protected $guarded = [
-        'contains'
+        'contains',
     ];
     protected $hidden = [
         'created_at',

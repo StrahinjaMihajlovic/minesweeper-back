@@ -28,7 +28,7 @@ class GameController extends Controller
         $this->gameService->setGame($game);
         $this->gameService->markThePlayer();
         return response()->json([
-            'fields' => array_values(FieldResource::collection($game->fields->sortBy('field_number'))->collection->all())
+            'fields' => array_values(FieldResource::collection($game->fields->sortBy('field_number', SORT_NUMERIC))->collection->all())
             ,'size' => "$game->size_x" . "x" . "$game->size_y"]);
     }
 
@@ -55,6 +55,6 @@ class GameController extends Controller
     public function createGame(Request $request)
     {
         return response()->json($this->gameService->generateGame($request->input('x'), $request->input('y')
-            , json_decode($request->input('bombs'))));
+            , ($request->input('bombs'))));
     }
 }

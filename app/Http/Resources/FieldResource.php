@@ -16,7 +16,7 @@ class FieldResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'field_number' => $this->field_number,
+            'field_number' => $this->field_number_display,
             'id' => $this->id,
             'contains' => $this->isOpened() ? $this->contains : 'not visited'
         ];
